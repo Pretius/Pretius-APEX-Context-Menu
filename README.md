@@ -128,6 +128,23 @@ Attribute 10 | not used
 
 Clicking the button `BTN_POPUP_MENU` will create popup menu.
 
+### Contextual menu
+
+The plugin can be implemented to alter default context menu (right mouse button click).
+
+1. Create APEX List `POPUP_MENU`
+1. Create entries and define according to your needs (authorisation scheme, action etc)
+1. Create dynamic action
+    1. Set `Event` to `Custom`
+    1. Set `Custom Event` to `contextmenu`
+    1. Set `Selection Type` to `JavaScript Expression`
+    1. Set `JavaScript Expression` to `document`
+1. Create `True` action
+    1. Set `Action` to `Pretius APEX Context Menu [Plug-In]`
+    1. Set `List name` to `POPUP_MENU`
+    1. _[Optional]_ Set `Affected Elements` to narrow area in which context menu will be available. For example region.
+1. Save & run page
+
 ### Advanced usage
 
 Please read inline help text for attribute `Override Behaviour` for detailed information about JSON object extending existing list entry. 
