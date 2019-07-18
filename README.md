@@ -220,7 +220,11 @@ Detailed information about how to use every attribute of the plugin is presented
 
 ### Plugin Events
 
+The plugin doesn't expose any extra events. To handle APEX menu events please refer [official API](https://docs.oracle.com/database/apex-18.1/AEXJS/menu.html#events-section).
+
 ### Translations
+
+The plugin does't use elements that can't be translated via APEX native translation capabilities.
 
 ## Changelog
 
