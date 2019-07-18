@@ -71,24 +71,24 @@ List entry object mapps properties from official API (https://docs.oracle.com/da
 
 Property              | Is supported
 ----------------------|-------------
-type                  | **Yes**
-id                    | **Yes**
-label                 | **Yes**
-labelKey              | **Yes**
+**type**              | **Yes**
+**id**                | **Yes**
+**label**             | **Yes**
+**labelKey**          | **Yes**
 offLabel              | No
 offLabelKey           | No
 onLabel               | No
 onLabelKey            | No
-hide                  | **Yes**
-disabled              | **Yes**
+**hide**              | **Yes**
+**disabled**          | **Yes**
 iconType              | No
-icon                  | **Yes**
-iconStyle             | **Yes**
-href                  | **Yes**
-action                | **Yes**
+**icon**              | **Yes**
+**iconStyle**         | **Yes**
+**href**              | **Yes**
+**action**            | **Yes**
 set                   | No
 get                   | No
-accelerator           | **Yes**
+**accelerator**       | **Yes**
 menu                  | No
 choices               | No
 choices[].label       | No
