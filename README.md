@@ -46,7 +46,26 @@ To successfully install the plugin follow those steps:
 1. Install package `PRETIUS_APEX_CONTEXT_MENU` in Oracle APEX Schema
 1. Install the plugin file `dynamic_action_plugin_com_pretius_apex_contextmenu.sql`
 
-## Usage Guide
+## APEX list integration
+
+### Conditions
+
+The plugin checks entry defined conditions. For conditions types
+
+* PLSQL_EXPRESION
+* PLSQL_EXPRESSION
+* FUNC_BODY_RETURNING_BOOLEAN
+* EXISTS
+* NOT_EXISTS
+* NEVER
+
+result is evaluated and if condition is not met then entry is not rendered.
+
+If condition is other type then entry is not rendered.
+
+### Authorization schemes
+
+The plugin checks entry defined authorization scheme. If current result is `true` then entry is rendered. 
 
 ### User defined attributes for list entry
 
@@ -64,6 +83,9 @@ Attribute 07 | when set to `separator` then display as horizontal separator
 Attribute 08 | not used
 Attribute 09 | not used
 Attribute 10 | not used
+
+
+## Usage Guide
 
 ### Basic usage
 
