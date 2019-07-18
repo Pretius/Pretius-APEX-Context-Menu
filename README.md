@@ -196,7 +196,7 @@ return {
       },
       {
         "type": "action",
-        "labelKey": "Action 2",
+        "labelKey": "Action 3",
         "action": function( pMenuOptions, pTriggeringElement ){
           alert("Action 3");
         }
