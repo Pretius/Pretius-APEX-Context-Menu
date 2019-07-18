@@ -64,7 +64,9 @@ To successfully install the plugin follow those steps:
 
 Clicking the button `BTN_POPUP_MENU` will create popup menu.
 
-### Alter entry behaviour
+### Advanced usage
+
+Please read inline help text for attribute `Override Behaviour` for detailed information about JSON object extending existing list entry.
 
 1. Create APEX List `POPUP_MENU_EXTEND`
 1. Create entry 
@@ -84,6 +86,8 @@ Clicking the button `BTN_POPUP_MENU` will create popup menu.
     1. Set `Override behaviour` to `*`
 1. Save & run page
 
+#### Alter entry behaviour
+
 `*` JavaScript code for point 5.iv
 ```javascript
 return {
@@ -99,6 +103,39 @@ return {
     "hide": function(pMenuOptions){
       return false;
     }
+  }
+};
+```
+
+#### Add submenu
+
+`*` JavaScript code for point 5.iv
+```javascript
+return {
+  "BTN_POPUP_MENU_EXTEND": {
+    "items": [
+      {
+        "type": "action",
+        "labelKey": "Action 1",
+        "action": function( pMenuOptions, pTriggeringElement ){
+          alert("Action 1");
+        }
+      },
+      {
+        "type": "action",
+        "labelKey": "Action 2",
+        "action": function( pMenuOptions, pTriggeringElement ){
+          alert("Action 2");
+        }
+      },
+      {
+        "type": "action",
+        "labelKey": "Action 2",
+        "action": function( pMenuOptions, pTriggeringElement ){
+          alert("Action 3");
+        }
+      }
+    ]
   }
 };
 ```
