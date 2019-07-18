@@ -48,6 +48,23 @@ To successfully install the plugin follow those steps:
 
 ## Usage Guide
 
+### User defined attributes for list entry
+
+The plugin uses **user defined attributes** to change behaviour of the list entry. See table below
+
+Property     | Is supported
+-------------|-------------
+Attribute 01 | id used to identify entry
+Attribute 02 | when set to `true` then entry is disabled
+Attribute 03 | when set to `true` then entry is not rendered
+Attribute 04 | reserved by APEX navigation template to set title. Not working (?)
+Attribute 05 | reserved by APEX navigation template to set shortcut (?). Not working (?)
+Attribute 06 | provided text is used as accelerator text displayed right to entry label.
+Attribute 07 | when set to `separator` then display as horizontal separator
+Attribute 08 | not used
+Attribute 09 | not used
+Attribute 10 | not used
+
 ### Basic usage
 
 1. Create APEX List `POPUP_MENU`
@@ -162,7 +179,7 @@ iconType              | No
 set                   | No
 get                   | No
 **accelerator**       | **Yes**
-menu                  | No
+menu*                 | No
 choices               | No
 choices[].label       | No
 choices[].labelKey    | No
@@ -171,7 +188,7 @@ choices[].disabled    | No
 choices[].accelerator | No
 current               | No
 
-`menu` property is handled just by settings property `items`. See example JSON above.
+`*` menu property is implemented via property `items` to avoid unnecessary nested objects. See `Inline Help Text` for attribute `Override behaviour` for example implmentation.
 
 ## Plugin Settings
 
