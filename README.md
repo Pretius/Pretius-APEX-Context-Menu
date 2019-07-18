@@ -1,8 +1,6 @@
 # Pretius APEX Context Menu
 
-Pretius APEX Context Menu is dynamic action plugin implementing APEX popup menu based on defined list. 
-The plugin can be attached to any HTML element and respects authorisation scheme rules.
-The plugin allows to extend existing entries and to add dynamically new entries.
+Pretius APEX Context Menu is dynamic action plugin implementing APEX popup menu based on defined APEX list. The plugin can be attached to any HTML element and renders entries according to authorisation scheme result. Menu entries can be extended by overriding behaviour, dynamically adding submenu and by adding new entries.
 
 ## Preview
 
