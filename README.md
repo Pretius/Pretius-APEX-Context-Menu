@@ -50,9 +50,9 @@ To successfully install the plugin follow those steps:
 
 ### Basic usage
 
-1. Create APEX List "POPUP_MENU"
+1. Create APEX List `POPUP_MENU`
 1. Create entries and define according to your needs (authorisation scheme, action etc)
-1. Create new button "BTN_POPUP_MENU"
+1. Create new button `BTN_POPUP_MENU`
 1. Create dynamic action
     1. Set `Event` to `Click`
     1. Set `Selection Type` to `Button`
@@ -66,13 +66,13 @@ Clicking the button `BTN_POPUP_MENU` will create popup menu.
 
 ### Alter entry behaviour
 
-1. Create APEX List "POPUP_MENU_EXTEND"
+1. Create APEX List `POPUP_MENU_EXTEND`
 1. Create entry 
     1. Set `List Entry Label` to `Extended behaviour`
     1. Set `Target type` to `URL`
     1. Set `URL Target` to `javascript: void(0);`
     1. Set `User defined Attribute 1` to `EXTENDED_BEHAVIOUR`
-1. Create new button "BTN_POPUP_MENU_EXTEND"
+1. Create new button `BTN_POPUP_MENU_EXTEND`
 1. Create dynamic action
     1. Set `Event` to `Click`
     1. Set `Selection Type` to `Button`
