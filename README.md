@@ -22,15 +22,45 @@ MIT
 
 ## Features at Glance
 
+* compatible with Oracle APEX 5.1, 18.x, 19.x
+* basic usage doesn't require JavaScript knowledge
+* [uses native APEX menu widget](https://docs.oracle.com/database/apex-18.1/AEXJS/menu.html)
+* based on APEX list
+  * supports authorization schemes
+  * list entries behaviour can be altered on runtime
+  * supports multiple levels of menu
+* can be bind with any DOM element
+
 ## Roadmap
+* not yet available
 
 ## Install
 
 ### Installation package
+* `PRETIUS_APEX_CONTEXT_MENU.sql` - the plugin package specification
+* `PRETIUS_APEX_CONTEXT_MENU.plb` - the plugin package body
+* `dynamic_action_plugin_com_pretius_apex_contextmenu.sql` - the plugin installation file for Oracle APEX 5.1 or higher
 
 ### Install procedure
+To successfully install the plugin follow those steps:
+1. Install package `PRETIUS_APEX_CONTEXT_MENU` in Oracle APEX Schema
+1. Install the plugin file `dynamic_action_plugin_com_pretius_apex_contextmenu.sql`
 
 ## Usage Guide
+
+1. Create APEX List "POPUP_MENU"
+1. Create entries and define according to your needs
+1. Create new button "BTN_POPUP_MENU"
+1. Create dynamic action
+    1. Set `Event` to `Click`
+    1. Set `Selection Type` to `Button`
+    1. Set `Button` to `BTN_POPUP_MENU`
+1. Create `True` action
+    1. Set `Action` to `Pretius APEX Context Menu [Plug-In]`
+    1. Set `List name` to `POPUP_MENU`
+1. Save & run page
+
+Clicking the button `BTN_POPUP_MENU` will create popup menu.
 
 ## Plugin Settings
 
