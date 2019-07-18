@@ -84,7 +84,7 @@ Clicking the button `BTN_POPUP_MENU` will create popup menu.
     1. Set `Override behaviour` to `*`
 1. Save & run page
 
-`*` JavaScript code for point X.IV
+`*` JavaScript code for point 5.iv
 ```javascript
 return {
   "BTN_POPUP_MENU_EXTEND": {
