@@ -66,7 +66,39 @@ Clicking the button `BTN_POPUP_MENU` will create popup menu.
 
 ### Advanced usage
 
-Please read inline help text for attribute `Override Behaviour` for detailed information about JSON object extending existing list entry.
+Please read inline help text for attribute `Override Behaviour` for detailed information about JSON object extending existing list entry. 
+List entry object mapps properties from official API (https://docs.oracle.com/database/apex-18.1/AEXJS/menu.html#.Item) as follows:
+
+Property              | Is supported
+----------------------|-------------
+type                  | **Yes**
+id                    | **Yes**
+label                 | **Yes**
+labelKey              | **Yes**
+offLabel              | No
+offLabelKey           | No
+onLabel               | No
+onLabelKey            | No
+hide                  | **Yes**
+disabled              | **Yes**
+iconType              | No
+icon                  | **Yes**
+iconStyle             | **Yes**
+href                  | **Yes**
+action                | **Yes**
+set                   | No
+get                   | No
+accelerator           | **Yes**
+menu                  | No
+choices               | No
+choices[].label       | No
+choices[].labelKey    | No
+choices[].value       | No
+choices[].disabled    | No
+choices[].accelerator | No
+current               | No
+
+
 
 1. Create APEX List `POPUP_MENU_EXTEND`
 1. Create entry 
