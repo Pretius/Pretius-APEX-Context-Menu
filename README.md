@@ -10,7 +10,34 @@ The plugin allows to extend existing entries and to add dynamically new entries.
 
 ## Table of Contents 
 
-TBD
+- [Preview](#preview)
+- [Table of Contents](#table-of-contents)
+- [License](#license)
+- [Demo application](#demo-application)
+- [Features at Glance](#features-at-glance)
+- [Roadmap](#roadmap)
+- [Install](#install)
+    - [Installation package](#installation-package)
+    - [Install procedure](#install-procedure)
+- [APEX list integration](#apex-list-integration)
+    - [Conditions](#conditions)
+    - [Authorization schemes](#authorization-schemes)
+    - [User defined attributes for list entry](#user-defined-attributes-for-list-entry)
+- [Usage Guide](#usage-guide)
+    - [Basic usage](#basic-usage)
+    - [Advanced usage](#advanced-usage)
+- [Plugin Settings](#plugin-settings)
+    - [Plugin Events](#plugin-events)
+    - [Translations](#translations)
+- [Changelog](#changelog)
+    - [1.0.0](#100)
+- [Known issues](#known-issues)
+- [About Author](#about-author)
+- [About Pretius](#about-pretius)
+- [Support](#support)
+    - [Free support](#free-support)
+    - [Paid support](#paid-support)
+
 
 ## License
 
@@ -181,7 +208,7 @@ return {
 };
 ```
 
-Entries properties are described in [Oracle JSDoc](https://docs.oracle.com/database/apex-18.1/AEXJS/menu.html#.Item) fot menu widget. The plugin supports properties as follows:
+List entry properties for APEX menu widget are described in [official API](https://docs.oracle.com/database/apex-18.1/AEXJS/menu.html#.Item). The plugin supports properties as follows:
 
 Property              | Is supported
 ----------------------|-------------
@@ -233,7 +260,19 @@ Initial Release
 
 ## Known issues
 
-TBD
+* not yet available
+
+## About Author
+Author | Github | Twitter | E-mail
+-------|--------|---------|-------
+Bartosz Ostrowski | [@bostrowski](https://github.com/bostrowski) | [@bostrowsk1](https://twitter.com/bostrowsk1) | bostrowski@pretius.com
+
+## About Pretius
+Pretius Sp. z o.o. Sp. K.
+
+Address | Website | E-mail
+--------|---------|-------
+Przy Parku 2/2 Warsaw 02-384, Poland | [http://www.pretius.com](http://www.pretius.com) | [office@pretius.com](mailto:office@pretius.com)
 
 ## Support
 Our plugins are free to use but in some cases you might need to contact us. We are willing to assist you but in certain circumstances you will be charged for our time spent on helping you. Please keep in mind we do our best to keep documentation up to date and we won't answer question for which there is explaination in documentation (at github and as help text in application builder).
@@ -249,18 +288,3 @@ We do support the plugin in certain cases such as bug fixing and change request.
 
 ### Paid support
 In case you are not able to implement the plugin or you are willing to have custom implementation based on the plugin attributes (ie. custom JavaScript callbacks) we are willing to help you. Please send inquiry to <email> with description what you want us to help you with. We will contact you as soon as possible with pricing and possible dates.
- 
-
-## About Author
-Author | Github | Twitter | E-mail
--------|--------|---------|-------
-Bartosz Ostrowski | [@bostrowski](https://github.com/bostrowski) | [@bostrowsk1](https://twitter.com/bostrowsk1) | bostrowski@pretius.com
-
-## About Pretius
-Pretius Sp. z o.o. Sp. K.
-
-Address | Website | E-mail
---------|---------|-------
-Przy Parku 2/2 Warsaw 02-384, Poland | [http://www.pretius.com](http://www.pretius.com) | [office@pretius.com](mailto:office@pretius.com)
-
-
