@@ -10,8 +10,6 @@ The plugin allows to extend existing entries and to add dynamically new entries.
 
 ## Table of Contents 
 
-- [Preview](#preview)
-- [Table of Contents](#table-of-contents)
 - [License](#license)
 - [Demo application](#demo-application)
 - [Features at Glance](#features-at-glance)
