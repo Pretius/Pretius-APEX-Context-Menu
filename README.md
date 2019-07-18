@@ -59,9 +59,7 @@ The plugin checks entry defined conditions. For conditions types
 * NOT_EXISTS
 * NEVER
 
-result is evaluated and if condition is not met then entry is not rendered.
-
-If condition is other type then entry is not rendered.
+result is evaluated and if condition is not met then entry is not rendered. If entry condition is other type than listed above then entry is not rendered.
 
 ### Authorization schemes
 
