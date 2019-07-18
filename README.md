@@ -98,8 +98,8 @@ The plugin checks entry defined authorization scheme. If current result is `true
 
 The plugin uses **user defined attributes** to change behaviour of the list entry. See table below
 
-Property     | Is supported
--------------|-------------
+Property     | Description
+-------------|------------
 Attribute 01 | id used to identify entry
 Attribute 02 | when set to `true` then entry is disabled
 Attribute 03 | when set to `true` then entry is not rendered
