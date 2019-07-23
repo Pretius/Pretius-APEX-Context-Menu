@@ -260,6 +260,8 @@ current               | No
 
 Detailed information about how to use every attribute of the plugin is presented in built-in help texts in APEX Application Builder.
 
+![Helptexts gif](images/image_helptexts.gif)
+
 ### Plugin Events
 
 The plugin doesn't expose any extra events. To handle APEX menu events please refer [official API](https://docs.oracle.com/database/apex-18.1/AEXJS/menu.html#events-section).
