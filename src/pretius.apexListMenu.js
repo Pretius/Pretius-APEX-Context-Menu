@@ -11,6 +11,8 @@ $.widget('pretius.apexListMenu', {
   C_ENTRY_TYPE_SUBMENU   : 'subMenu',
   C_ENTRY_TYPE_SEPARATOR : 'separator',
 
+  C_PLUGIN_NAME : 'Pretius APEX Context Menu',
+
   _create: function(){
     this._super( this.options );
 
@@ -457,7 +459,7 @@ $.widget('pretius.apexListMenu', {
     apex.message.showErrors( {
       type: apex.message.ERROR,
       location: "page",
-      message: this.logPrefix+' '+pText
+      message: '<strong>'+this.C_PLUGIN_NAME+'</strong>: '+pText
     } );
 
     apex.debug.message( this.C_LOG_ERROR, this.logPrefix, pText); 
