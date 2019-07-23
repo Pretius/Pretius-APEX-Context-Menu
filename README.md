@@ -51,7 +51,7 @@ MIT
 * based on APEX list
   * supports authorization schemes
   * supports basic conditions
-* list entries can extended on runtime
+* list entries can be extended on runtime
     * to override action on click
     * to disable entry
     * to hide entry
