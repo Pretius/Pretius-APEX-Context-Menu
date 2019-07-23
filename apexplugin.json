@@ -1,0 +1,42 @@
+{
+  "name" : "Pretius APEX Nested reports",
+  "version" : "1.0.0",
+  "description" : "Pretius APEX Context Menu is dynamic action plugin implementing APEX popup menu based on defined APEX list. The plugin can be attached to any HTML element and renders entries according to authorisation scheme result. Menu entries can be extended by overriding behaviour, dynamically adding submenu and by adding new entries.",
+  "keywords" : ["menu", "context", "popup menu", "list"],
+  "homepage" : "https://github.com/bostrowski/Pretius-APEX-Context-Menu",
+  "bugs" : {
+    "url" : "https://github.com/bostrowski/Pretius-APEX-Context-Menu/issues",
+    "email" : "apex@pretius.com"
+  },
+  "license" : "MIT",
+  "author" : {
+    "name" : "Bartosz Ostrowski",
+    "email" : "bostrowski@pretius.com",
+    "url" : "http://pretius.com/technologies/oracle-apex/"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/bostrowski/Pretius-APEX-Context-Menu.git"
+  },
+  "oracle": {
+    "versions": [
+      "11.2.0.1",
+      "12.1.0.1",
+      "12.2.0.1"
+    ],
+    "apex": {
+      "versions": [
+        "5.1.0",
+        "18.1.0",
+        "18.2.0",
+        "19.1.0"
+      ],
+      "plugin" : {
+        "internalName" : "COM.PRETIUS.APEX.CONTEXTMENU",
+        "type" : "dynamic action",
+        "demo" : "https://apex.oracle.com/pls/apex/f?p=113048:1",
+        "previewImage" : "https://raw.githubusercontent.com/bostrowski/Pretius-APEX-Context-Menu/master/images/image_preview.gif"
+      }
+    }
+  }
+}
