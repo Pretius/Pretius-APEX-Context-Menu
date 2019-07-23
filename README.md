@@ -145,10 +145,10 @@ The plugin can be implemented to alter default context menu (right mouse button 
     1. _[Optional]_ Set `Affected Elements` to narrow area in which context menu will be available. For example region.
 1. Save & run page
 
-Contextual menu can be applied to any element by specyfing `Selection Type = jQuery Selector`. Contextual menu can be positioned differently - to mouse pointer position and provided DOM element.
+Contextual menu can be applied to any element by specyfing `Selection Type` = `jQuery Selector`. Contextual menu can be positioned differently:
 
-* When `Selection Type` = `JavaScript Expression` and `JavaScript Expression` = `document` then menu is positioned to mouse pointer position
-    * when `Affected Elements` is defined then menu is available for given `Affected Elements`
+* when `Selection Type` = `JavaScript Expression` and `JavaScript Expression` = `document` then menu is positioned to right click event position properties `event.pageX` and `event.pageY`
+    * when `Affected Elements` is defined then menu is available only for are of given `Affected Elements`
 * When `Selection Type` = `jQuery Selector` then menu is positioned to given `jQuery Selector`
 
 ### Advanced usage
