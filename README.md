@@ -41,7 +41,7 @@ MIT
 
 ## Demo application
 
-[https://apex.oracle.com/pls/apex/f?p=113048:1](https://apex.oracle.com/pls/apex/f?p=113048:1)
+[https://apex.oracle.com/pls/apex/f?p=PRETIUS_APEX_CONTEXT_MENU:1](https://apex.oracle.com/pls/apex/f?p=PRETIUS_APEX_CONTEXT_MENU:1)
 
 ## Features at Glance
 
