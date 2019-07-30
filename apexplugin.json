@@ -1,5 +1,5 @@
 {
-  "name" : "Pretius APEX Nested reports",
+  "name" : "Pretius APEX Context Menu",
   "version" : "1.0.0",
   "description" : "Pretius APEX Context Menu is dynamic action plugin implementing APEX popup menu based on defined APEX list. The plugin can be attached to any HTML element and renders entries according to authorisation scheme result. Menu entries can be extended by overriding behaviour, dynamically adding submenu and by adding new entries.",
   "keywords" : ["menu", "context", "popup menu", "list"],
