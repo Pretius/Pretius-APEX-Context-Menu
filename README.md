@@ -178,7 +178,7 @@ Please read inline help text for attribute `Override Behaviour` for detailed inf
 `*` JavaScript code for point 5.iv
 ```javascript
 return {
-  "BTN_POPUP_MENU_EXTEND": {
+  "EXTENDED_BEHAVIOUR": {
     "action": function( pMenuOptions, pTriggeringElement ){
       //Code to be executed when users clicks on entry
       alert('Altered action');
@@ -199,7 +199,7 @@ return {
 `*` JavaScript code for point 5.iv
 ```javascript
 return {
-  "BTN_POPUP_MENU_EXTEND": {
+  "EXTENDED_BEHAVIOUR": {
     "items": [
       {
         "type": "action",
