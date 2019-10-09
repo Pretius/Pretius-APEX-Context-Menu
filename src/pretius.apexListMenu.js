@@ -1,5 +1,11 @@
 $.widget('pretius.apexListMenu', {
 //
+  C_ERR_MSG_EXTRA_RETURN_UNDEFINED : 'Extra Entries returned undefined.',
+  C_ERR_MSG_EXTRA_RETURN_INVALID   : 'Extra Entries returned invalid object.',
+  C_ERR_MSG_EXTRA_EXECUTE_JS       : 'Extra Entries raised error "%0".',
+
+  C_ERR_MSG_EXTEND_EXECUTE_JS      : 'Override Behaviour raised error: "%0".',
+  C_ERR_MSG_EXTEND_RETURN_INVALID  : 'Override Behaviour returned invalid object.',
 //
   C_LOG_DEBUG    : apex.debug.LOG_LEVEL.INFO,
   C_LOG_WARNING  : apex.debug.LOG_LEVEL.WARN,
@@ -18,25 +24,18 @@ $.widget('pretius.apexListMenu', {
 
     this.logPrefix = '# '+this.options.action.action;
 
-    apex.debug.message( this.C_LOG_DEBUG, this.logPrefix, '_create', 'this.options',this.options);
+    apex.debug.message( this.C_LOG_DEBUG, this.logPrefix, '_create', this.getDebugObject());
 
     if ( this.options.list.type == 'SQL_QUERY' || this.options.list.type == 'FUNCTION_RETURNING_SQL_QUERY' )  {
       apex.debug.message( this.C_LOG_DEBUG, this.logPrefix, '_create', 'convert dynamic list query result');
       this.options.list.entries = this._convertObject();
     }
 
-    
+    this.isVisible = false;
+
     this.uniqueId  = $('<div></div>').uniqueId().attr('id');
     this.eventNameSpace   = this.options.action.action+'-'+this.uniqueId;
 
-
-    this.extendJSON   = this._getExtendJson();
-    this.extraEntries = this._getExtraEntries();    
-
-    this.menuConfig = this._apexCreateMenuJson();
-
-    this.menuContainer = this._createMenuContainer();
-    
     if ( this.element != document ) {
       this.element
         .attr({
@@ -47,33 +46,83 @@ $.widget('pretius.apexListMenu', {
         .addClass('js-menuButton');
     }
 
-    this.menuContainer.appendTo("body");
+    this.menuContainer = this._createMenuContainer();
+    this.menuContainer.appendTo("body");    
 
-    apex.debug.message( this.C_LOG_DEBUG, this.logPrefix, '_create', 'init APEX menu on element');
-    this.menuContainer.menu( this.menuConfig );
-      
-    this.apexButton = true;
+    this.extendJSON   = this._getExtendJson();
+    this.extraEntries = this._getExtraEntries();    
 
-    if ( !this.element.is('button') || this.element.is('button') && this.element.attr('id') == undefined ) {
-      apex.debug.message( this.C_LOG_DEBUG, this.logPrefix, '_create', 'invalid button, force show');
-      this.apexButton = false;
-      this.show();
+    this.menuConfig = this._apexCreateMenuJson();
+
+    if ( !this.element.is('button') ) {
+
+      this.element.on('keydown', $.proxy(function( pEvent ){
+
+        if ( pEvent.which == $.ui.keyCode.DOWN ) {
+          pEvent.stopImmediatePropagation();
+          pEvent.preventDefault();
+          
+          this._performFakeClickEvent();
+        }
+  
+      }, this))
     }
+
+    apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_create', 'init APEX menu on element');
+    
+    this.menuContainer.menu( this.menuConfig );
+    
+    if ( this.options.isContextMenu ) {
+      apex.debug.message( this.C_LOG_DEBUG, this.logPrefix, '_create', 'force show method for context menu event');
+      this.show( this.options.browserEvent );
+    }
+
+    if ( this.options.browserEvent.type == "click" ) {
+      if ( this.options.action.executeOnPageInit == false ) {
+        if ( this.options.dynamicActionScope == "live" ) {
+          apex.debug.message( this.C_LOG_DEBUG, this.logPrefix, '_create', 'force show method for click event with dynamic scope');
+
+          this._performFakeClickEvent( true );
+        }
+        else {
+          apex.debug.message( this.C_LOG_DEBUG, this.logPrefix, '_create', 'force show method for click event without initialization on page load event.');
+          this.show( this.options.browserEvent );
+        }
+      }
+
+    }
+
+    if ( this.options.listenToEvent != null ) {
+      this.element.on( this.options.listenToEvent, $.proxy(this.show, this) );
+    }
+    
   },
 
+  _performFakeClickEvent: function( pForce ){
+    apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_performFakeClickEvent', 'this.element', this.element);
+
+    var e = jQuery.Event( 'click', { 
+      target: this.element.get(0),
+      pageX: this.element.offset().left,
+      pageY: this.element.offset().top+this.element.outerHeight()
+    } );
+
+    this.show( e, pForce );
+  },
 //
 //
   _destroy: function(){
+    apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_destroy', 'this.element', this.element);
     //usuwaj wszystkie nadmiarowe elementy i menu ktore osadziles w body
 
     try{
-      this.menuContainer.remove();  
+      this.menuContainer.remove();
     } catch( pError ){
-      apex.debug.message( this.C_LOG_ERROR, this.logPrefix, '_destroy', pError.message);
+      apex.debug.message( this.C_LOG_ERROR, this.logPrefix, '_destroy removing menu container raised erroe', pError.message);
     }
     
     try{
-      this.element.removeClass('is-active')      
+      this.element.removeClass('is-active');
       this.element.removeAttr('data-menu');
       this.element.removeAttr('aria-haspopup');
       this.element.removeAttr('aria-expanded');
@@ -81,7 +130,7 @@ $.widget('pretius.apexListMenu', {
       this.element.removeClass('js-menuButton');
     
     }catch( pError ) {
-      apex.debug.message( this.C_LOG_ERROR, this.logPrefix, '_destroy', pError.message);
+      apex.debug.message( this.C_LOG_ERROR, this.logPrefix, '_destroy removing this.element attributes raised error', pError.message);
     }
 
   },
@@ -105,15 +154,26 @@ $.widget('pretius.apexListMenu', {
 //
 //
   _createMenuContainer: function(){
-    apex.debug.message( this.C_LOG_DEBUG, this.logPrefix, '_createMenuContainer');
+    apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_createMenuContainer');
 
     var div = $( '<div id="'+this.uniqueId+'"></div>' );
 
-    if ( this.options.action.attribute02.indexOf('FP') > -1 ) {
+    if ( this._attrFixPosition() ) {
       div.addClass('pretiusapexmenulist-fixed');
     }
 
     return div;
+  },
+  _getFunctionContext: function(){
+    var returnObject;
+    
+    returnObject = {
+      "element": this.element,
+      "id": this.uniqueId
+    };
+
+    apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_getFunctionContext', returnObject);
+    return returnObject;
   },
   _getExtraEntries: function(){
     var 
@@ -121,18 +181,36 @@ $.widget('pretius.apexListMenu', {
       funcBody = "",
       result = [];
 
-    if ( this.options.action.attribute02.indexOf('EE') > -1 ) {
-      apex.debug.message( this.C_LOG_DEBUG, this.logPrefix, '_getExtraEntries');
+    if ( this._attrAddExtraEntries() ) {
+      apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_getExtraEntries');
 
       try {
         funcBody = ""+
           "this.triggeringElement = pTriggeringElement; \n"+
           "this.affectedElements = paffectedElements; \n"+
+          "this.action = pAction; \n"+
+          "this.browserEvent = pBrowserEvent; \n"+
+          "this.data = pData; \n"+
           ""+this.options.action.attribute04+"\n"+
           "";
-        func = new Function( "pTriggeringElement", "paffectedElements", funcBody );
-        result = func.call( this, this.options.triggeringElement, this.options.affectedElements );
-       
+          
+        func = new Function( 
+          "pTriggeringElement", 
+          "paffectedElements", 
+          "pAction", 
+          "pBrowserEvent", 
+          "pData", 
+          funcBody 
+        );
+
+        result = func.call(
+          this._getFunctionContext(), 
+          this.options.triggeringElement, 
+          this.options.affectedElements, 
+          this.options.action, 
+          this.options.browserEvent, 
+          this.options.data 
+        );       
 
         apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_getExtraEntries', 'result', result);        
 
@@ -141,14 +219,18 @@ $.widget('pretius.apexListMenu', {
           delete result[i].seq;
         }
 
-        if ( result == undefined ) {
-          //no result from function
-          this._throwError( 'Extra Entries returned undefined' );
-        }
-
       } catch( pError ) {
         this._printFunctionToConsole(this.options.action.attribute04);
-        this._throwError( 'Extra entries menu error: '+pError.message );
+        this._throwError( this.C_ERR_MSG_EXTRA_EXECUTE_JS, pError.message );
+      }
+
+      if ( result == undefined ) {
+        //no result from function
+        this._throwError( this.C_ERR_MSG_EXTRA_RETURN_UNDEFINED );
+      }
+      else if ( !(result instanceof Array) ) {
+        //this._throwError( 'Override Behaviour returned invalid object.' );
+        this._throwError( this.C_ERR_MSG_EXTRA_RETURN_INVALID );
       }
     }
 
@@ -184,27 +266,49 @@ $.widget('pretius.apexListMenu', {
       checkResult;
       
 
-    if ( this.options.action.attribute02.indexOf('OMB') > -1 ) {
+
+    if ( this._attrOverrideBehaviour() ) {
       apex.debug.message( this.C_LOG_DEBUG, this.logPrefix, '_getExtendJson');      
 
       try{
         funcBody = ""+
           "this.triggeringElement = pTriggeringElement; \n"+
-          "this.affectedElements = paffectedElements; \n"+
+          "this.affectedElements  = paffectedElements; \n"+
+          "this.action            = pAction; \n"+
+          "this.browserEvent      = pBrowserEvent; \n"+
+          "this.data              = pData; \n"+
           ""+this.options.action.attribute03+"\n"+
           "";
-        func = new Function( "pTriggeringElement", "paffectedElements", funcBody );
-        result = func.call( this, this.options.triggeringElement, this.options.affectedElements );
+
+        func = new Function( 
+          "pTriggeringElement", 
+          "paffectedElements", 
+          "pAction", 
+          "pBrowserEvent", 
+          "pData", 
+          funcBody 
+        );
+
+        result = func.call( 
+          this._getFunctionContext(), 
+          this.options.triggeringElement, 
+          this.options.affectedElements, 
+          this.options.action, 
+          this.options.browserEvent, 
+          this.options.data 
+        );
+
       } catch( pError ) {
         this._printFunctionToConsole(this.options.action.attribute03);
-        this._throwError( 'Extending menu error: '+pError.message );
+        this._throwError( this.C_ERR_MSG_EXTEND_EXECUTE_JS, pError.message );
       }
 
       apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_getExtendJson result', result);
 
       if ( !(result instanceof Object) || result instanceof Array ) {
-        this._throwError( 'Override Behaviour returned invalid object.' );
+        this._throwError( this.C_ERR_MSG_EXTEND_RETURN_INVALID );
       }
+      //tbd in next rlease: more detailed check on object type;
 
       //check if ids represents lists
       for ( var i in result ) {
@@ -219,23 +323,31 @@ $.widget('pretius.apexListMenu', {
     return result;
   },
   _apexCallbackAfterClose: function( pEvent, pUi ){
-    apex.debug.message( this.C_LOG_DEBUG,  this.logPrefix, '_apexCallbackAfterClose');
+    apex.debug.message( this.C_LOG_LEVEL6,  this.logPrefix, '_apexCallbackAfterClose');
     apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_apexCallbackAfterClose', 'pEvent', pEvent);
     apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_apexCallbackAfterClose', 'pUi'   , pUi);
 
-    this.destroy();
+    this.isVisible = false;
+
+    if ( this.options.isContextMenu ) {
+      this.destroy();  
+    }
+
+    if ( pUi.launcher == null && this._attrDisplayAtMousePosition() ) {
+      apex.debug.message( this.C_LOG_DEBUG,  this.logPrefix, '_apexCallbackAfterClose', 'force focus to triggering element.');
+      this.element.focus();
+    }
   },
   _apexCallbackBeforeOpen: function( pEvent, pUi ){
-    apex.debug.message( this.C_LOG_DEBUG,  this.logPrefix, '_apexCallbackBeforeOpen');
+    apex.debug.message( this.C_LOG_LEVEL6,  this.logPrefix, '_apexCallbackBeforeOpen');
     apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_apexCallbackBeforeOpen', 'pEvent', pEvent);
     apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_apexCallbackBeforeOpen', 'pUi'   , pUi);
 
-    if ( this.apexButton == false ) {
-      this.element.addClass('is-active')
-    }
+    this.isVisible = true;
+
   },
   _apexCallbackCreate: function( pEvent, pUi ){
-    apex.debug.message( this.C_LOG_DEBUG,  this.logPrefix, '_apexCallbackCreate');
+    apex.debug.message( this.C_LOG_LEVEL6,  this.logPrefix, '_apexCallbackCreate');
     apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_apexCallbackCreate', 'pEvent', pEvent);
     apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_apexCallbackCreate', 'pUi'   , pUi);
   },
@@ -255,7 +367,7 @@ $.widget('pretius.apexListMenu', {
     }    
   },
   _apexCreateMenuJson: function(){
-    apex.debug.message( this.C_LOG_DEBUG, this.logPrefix, '_apexCreateMenuJson');
+    apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_apexCreateMenuJson');
 
     var 
       menu = {
@@ -294,7 +406,7 @@ $.widget('pretius.apexListMenu', {
     return menu;
   },
   _apexCreateMenuEntries: function( pList ){
-    apex.debug.message( this.C_LOG_DEBUG,  this.logPrefix, '_apexCreateMenuEntries');
+    apex.debug.message( this.C_LOG_LEVEL6,  this.logPrefix, '_apexCreateMenuEntries');
     apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_apexCreateMenuEntries', pList);
     
     var 
@@ -305,7 +417,7 @@ $.widget('pretius.apexListMenu', {
       entriesArray.push( this._apexCreateMenuEntry( pList[i] ) );
     }
 
-    apex.debug.message( this.C_LOG_DEBUG,  this.logPrefix, '_apexCreateMenuEntries out', entriesArray);
+    apex.debug.message( this.C_LOG_LEVEL6,  this.logPrefix, '_apexCreateMenuEntries out', entriesArray);
 
 
     return entriesArray;
@@ -325,7 +437,7 @@ $.widget('pretius.apexListMenu', {
     }
   },
   _apexCreateMenuEntry: function( pEntry ){
-    apex.debug.message( this.C_LOG_DEBUG, this.logPrefix, '_apexCreateMenuEntry "'+pEntry.ENTRY_TEXT+'"');
+    apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_apexCreateMenuEntry "'+pEntry.ENTRY_TEXT+'"');
     apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_apexCreateMenuEntry', pEntry);
 
 
@@ -454,27 +566,97 @@ $.widget('pretius.apexListMenu', {
   _throwError: function( pText ){
     apex.debug.message( this.C_LOG_LEVEL9, this.logPrefix, pText); 
 
+    var 
+      message = pText,
+      messageText;
+
+    for (var i=1; i < arguments.length; i++) {
+      message = message.replace('%'+(i-1), arguments[i]);
+    }
+
+    messageText = message;
+
+    message = ''+
+      '<strong>'+this.C_PLUGIN_NAME+'</strong><br>'+
+      //this.daName+'<br>'+
+      '<span class="pretiusapexmenulist-errorMessage">'+message+'</span>';    
+
     apex.message.clearErrors();
 
     apex.message.showErrors( {
       type: apex.message.ERROR,
       location: "page",
-      message: '<strong>'+this.C_PLUGIN_NAME+'</strong>: '+pText
+      message: message
     } );
 
-    apex.debug.message( this.C_LOG_ERROR, this.logPrefix, pText); 
+    apex.debug.message( this.C_LOG_ERROR, this.logPrefix, messageText); 
 
     this.destroy();
-    throw pText;
+    throw 'Plugin stopped!';
   },
-  show: function(){
-    if ( this.element.get(0) == document ) {
-      this.menuContainer.menu("open", this.options.browserEvent.pageX, this.options.browserEvent.pageY);
+  
+  _attrOverrideBehaviour: function(){
+    apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_attrFixPosition');
+
+    return this.options.action.attribute02.indexOf('OMB') > -1;
+  },
+  _attrFixPosition: function(){
+    apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_attrFixPosition');
+
+    return this.options.action.attribute02.indexOf('FP') > -1;
+  },
+  _attrAddExtraEntries: function(){
+    apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_attrDisplayAtMousePosition');
+
+    return this.options.action.attribute02.indexOf('EE') > -1;
+  },
+  _attrDisplayAtMousePosition: function(){
+    apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, '_attrDisplayAtMousePosition');
+
+    return this.options.action.attribute02.indexOf('DAMP') > -1;
+  },
+  getDebugObject: function(){
+    apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, 'getDebugObject');
+
+    return {
+      "element": this.element.get(0),
+      "options": $.extend({}, this.options),
+      "widget": $.extend({}, this)
+    };
+  },
+  show: function( pEvent, pForce ){
+    apex.debug.message( this.C_LOG_DEBUG, this.logPrefix, 'show', this.getDebugObject()); 
+    apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, 'show event', pEvent); 
+
+    var x, y;
+
+    if ( this.element.is('button') && this.options.isContextMenu == false && pForce == undefined){
+      apex.debug.message( this.C_LOG_DEBUG, this.logPrefix, 'show: element is button, let apex handle showing menu itself.'); 
+      return void(0);
+    }
+
+    if ( this.isVisible ) {
+      apex.debug.message( this.C_LOG_WARNING, this.logPrefix, 'show: menu is visible, don\'t show it again!');
+      return void(0);
+    }
+
+    x = pEvent.pageX;
+    y = pEvent.pageY;
+
+    if ( this._attrDisplayAtMousePosition() ) {
+      if ( x == 0 && y == 0 ) {
+        apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, 'menu was ment to display at position x="0" && y="0". Menu is aligned to triggering element.');
+        this.menuContainer.menu("open", this.element);
+
+      }
+      else {
+        apex.debug.message( this.C_LOG_LEVEL6, this.logPrefix, 'show at position x="'+x+'", y="'+y+'"');
+        this.menuContainer.menu("open", x, y);
+      }
     }
     else {
-      this.menuContainer.menu("open", this.element);  
+      this.menuContainer.menu("open", this.element);
     }
-    
   },
   debounce: function(func, wait, immediate) {
     //apex.debug.log('debounce', 'func', func, 'wait', wait, 'immediate', immediate);
@@ -505,4 +687,3 @@ $.widget('pretius.apexListMenu', {
     }
   }
 });
-

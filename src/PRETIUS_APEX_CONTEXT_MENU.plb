@@ -10,6 +10,7 @@ create or replace package body "PRETIUS_APEX_CONTEXT_MENU" is
   g_dynamic_action apex_plugin.t_dynamic_action;
   g_plugin         apex_plugin.t_plugin;
 
+
   /*
     returns boolean result of pl/sql expression
   */  
@@ -288,8 +289,8 @@ create or replace package body "PRETIUS_APEX_CONTEXT_MENU" is
   exception
     when others then
       APEX_ERROR.ADD_ERROR (
-        p_message          => 'Pretius APEX List Menu',
-        p_additional_info  => 'List name <strong>'||pi_list_name||'</strong> provided in plugin configuration not found. Make sure provided value maps to existing list defined in <strong>Shared Components > Lists</strong>',
+        p_message          => 'Pretius APEX Context Menu',
+        p_additional_info  => 'List name <strong>'||pi_list_name||'</strong> provided in the plugin configuration not found. Make sure provided value maps to existing list defined in <strong>Shared Components > Lists</strong>',
         p_display_location => apex_error.c_on_error_page
       );
 
@@ -297,13 +298,17 @@ create or replace package body "PRETIUS_APEX_CONTEXT_MENU" is
 
   /*
   */
-  function getDaJQuerySelector return varchar2 as 
-    v_result APEX_APPLICATION_PAGE_DA.WHEN_ELEMENT%type;
+  function getDynamicActionDefinition return varchar2 as 
+    v_refcursor_da sys_refcursor;
+    v_refcursor_action sys_refcursor;
+
+    v_da APEX_APPLICATION_PAGE_DA%rowtype;
   begin
+
     select 
-      WHEN_ELEMENT
+      aapd.*
     into
-      v_result
+      v_da
     from 
       APEX_APPLICATION_PAGE_DA_ACTS aapda
     join
@@ -312,15 +317,33 @@ create or replace package body "PRETIUS_APEX_CONTEXT_MENU" is
       aapd.DYNAMIC_ACTION_ID = aapda.DYNAMIC_ACTION_ID
     where 
       aapda.application_id = g_app_id
-      and aapda.action_id  = g_dynamic_action.id
-      and aapd.WHEN_SELECTION_TYPE_CODE = 'JQUERY_SELECTOR';
+      and aapda.action_id  = g_dynamic_action.id;
 
-    return v_result;
+    apex_json.initialize_clob_output;
 
-  exception
-    when others then
-      return 'null';
-  end getDaJQuerySelector;
+    apex_json.open_object;
+
+    apex_json.write( 'WHEN_ELEMENT'            , v_da.WHEN_ELEMENT            , true );
+    apex_json.write( 'WHEN_EVENT_CUSTOM_NAME'  , v_da.WHEN_EVENT_CUSTOM_NAME  , true );
+    apex_json.write( 'WHEN_EVENT_INTERNAL_NAME', v_da.WHEN_EVENT_INTERNAL_NAME, true );
+    apex_json.write( 'WHEN_EVENT_NAME'         , v_da.WHEN_EVENT_NAME         , true );
+    apex_json.write( 'WHEN_EVENT_SCOPE'        , v_da.WHEN_EVENT_SCOPE        , true );
+    apex_json.write( 'WHEN_SELECTION_TYPE'     , v_da.WHEN_SELECTION_TYPE     , true );
+    apex_json.write( 'WHEN_SELECTION_TYPE_CODE', v_da.WHEN_SELECTION_TYPE_CODE, true );
+    apex_json.write( 'DYNAMIC_ACTION_NAME'     , v_da.DYNAMIC_ACTION_NAME, true );
+    
+
+    
+
+    apex_json.close_object;
+
+    return apex_json.get_clob_output;
+
+  end getDynamicActionDefinition;
+
+
+  /*
+  */
 
   /*
   */
@@ -332,7 +355,7 @@ create or replace package body "PRETIUS_APEX_CONTEXT_MENU" is
     v_result apex_plugin.t_dynamic_action_render_result;
     v_json varchar2(32000);
 
-    v_da_jQuery_selector varchar2(4000);
+    
 
     v_attr_list_name        APEX_APPLICATION_PAGE_DA_ACTS.ATTRIBUTE_01%TYPE := p_dynamic_action.attribute_01;
     v_attr_settings_chbx    APEX_APPLICATION_PAGE_DA_ACTS.ATTRIBUTE_02%TYPE := NVL(p_dynamic_action.attribute_02, 'null');
@@ -384,8 +407,6 @@ create or replace package body "PRETIUS_APEX_CONTEXT_MENU" is
     v_result.attribute_14        := p_dynamic_action.attribute_14;
     v_result.attribute_15        := p_dynamic_action.attribute_15;
     
-    v_da_jQuery_selector := getDaJQuerySelector;
-
     getListTypeAndQuery(
       pi_list_name  => v_attr_list_name,  
       pi_list_type  => v_list_type,
@@ -473,40 +494,29 @@ create or replace package body "PRETIUS_APEX_CONTEXT_MENU" is
 
     v_result.javascript_function := '
       function(){
-        var self = $(this.triggeringElement);
+        var 
+          json = {
+            type: "'||v_list_type||'", 
+            entries: '||v_json||',
+            da: '||getDynamicActionDefinition||'
+          };
+        
+        try{
+          ($.proxy( pretius_handle_da, this, json ))().init();
 
-        if ( this.browserEvent.type == "contextmenu" ) {
-
-          if ( this.triggeringElement == document && !$.contains( this.affectedElements[0], this.browserEvent.target ) ) {
-            //context menu on document
-            //affectedElements restricts area
-            //target element is not descendant of affectedElements
-            //dont create context menu
-            return void(0);
-          }
-          else {
-            this.browserEvent.preventDefault();
-            this.browserEvent.stopImmediatePropagation();
-          }
-
+        } catch( pError ) {
+          var 
+            da = '||getDynamicActionDefinition||',
+            daName = da.DYNAMIC_ACTION_NAME;
+            
+          apex.debug.message( apex.debug.LOG_LEVEL.ERROR, ''Dynamic action "''+daName+''":'',  pError);
+          //apex.debug.message( apex.debug.LOG_LEVEL.ERROR, daName, "json", json);
+          //apex.debug.message( apex.debug.LOG_LEVEL.ERROR, daName, "this", this);
+          //throw pError;
         }
+        
 
-        if ( self.data("pretius-apexListMenu") == undefined ) {
-          
-          self.apexListMenu(this, {
-            list: {
-              type: "'||v_list_type||'", 
-              entries: '||v_json||'
-            }
-          });
-        }
-        else {
-
-          if ( !self.is("button") ) {
-            self.apexListMenu("show");   
-          }
-          
-        }
+        return void(0);
       }
     ';
 
