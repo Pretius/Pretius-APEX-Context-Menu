@@ -311,9 +311,9 @@ Initial Release
 * [Context Menu in Oracle APEX](https://www.ostrowskibartosz.pl/archiwa/319)
 
 ## About Author
-Author | Github | Twitter | E-mail
--------|--------|---------|-------
-Bartosz Ostrowski | [@bostrowski](https://github.com/bostrowski) | [@bostrowsk1](https://twitter.com/bostrowsk1) | bostrowski@pretius.com
+Author | Website |Github | Twitter | E-mail
+-------|---------|-------|---------|-------
+Bartosz Ostrowski | [www.ostrowskibartosz.pl](http://www.ostrowskibartosz.pl) | [@bostrowski](https://github.com/bostrowski) | [@bostrowsk1](https://twitter.com/bostrowsk1) | bostrowski@pretius.com
 
 ## About Pretius
 Pretius Sp. z o.o. Sp. K.
