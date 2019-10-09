@@ -28,6 +28,7 @@ Pretius APEX Context Menu is dynamic action plugin implementing APEX popup menu 
 - [Changelog](#changelog)
     - [1.0.0](#100)
 - [Known issues](#known-issues)
+- [Related articles](#related-articles)
 - [About Author](#about-author)
 - [About Pretius](#about-pretius)
 - [Support](#support)
