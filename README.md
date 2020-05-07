@@ -306,9 +306,12 @@ Initial Release
 * not yet available
 
 ## Related articles
-* [Pretius Context Menu  v1.1.0 in details](https://www.ostrowskibartosz.pl/archiwa/692)
-* [Report checkbox menu aka Google Gmail](https://www.ostrowskibartosz.pl/archiwa/365)
-* [Context Menu in Oracle APEX](https://www.ostrowskibartosz.pl/archiwa/319)
+* [Open modal page using Pretius APEX Context Menu](https://www.ostrowskibartosz.pl/2019/12/open-modal-page-using-pretius-apex-context-menu/)
+* [Pretius APEX Enhanced LOV Item v1.1.0 supports Interactive Grid!](https://www.ostrowskibartosz.pl/2019/12/pretius-apex-enhanced-lov-item-v1-1-0-interactive-grid/)
+* [APEX item Quick Picks as Context Menu](https://www.ostrowskibartosz.pl/2019/10/apex-item-quick-picks-as-context-menu/)
+* [Pretius Context Menu  v1.1.0 in details](https://www.ostrowskibartosz.pl/2019/10/pretius-context-menu-release-v1-1-0/)
+* [Report checkbox menu aka Google Gmail](https://www.ostrowskibartosz.pl/2019/09/report-checkbox-menu-aka-google-gmail/)
+* [Context Menu in Oracle APEX](https://www.ostrowskibartosz.pl/2019/08/context-menu-in-oracle-apex/)
 
 ## About Author
 Author | Website |Github | Twitter | E-mail
