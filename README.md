@@ -143,6 +143,8 @@ The plugin can be implemented to alter default context menu (right mouse button 
     1. Set `Custom Event` to `contextmenu`
     1. Set `Selection Type` to `JavaScript Expression`
     1. Set `JavaScript Expression` to `document`
+    1. Set `Advanced \ Event Scope` to `Dynamic`
+    1. Set `Advanced \ Static Container (jQuery Selector)` to `body`    
 1. Create `True` action
     1. Set `Action` to `Pretius APEX Context Menu [Plug-In]`
     1. Set `List name` to `POPUP_MENU`
