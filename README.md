@@ -123,6 +123,8 @@ Attribute 10 | not used
     1. Set `Event` to `Click`
     1. Set `Selection Type` to `Button`
     1. Set `Button` to `BTN_POPUP_MENU`
+    1. Set `Advanced \ Event Scope` to `Dynamic`
+    1. Set `Advanced \ Static Container (jQuery Selector)` to `body`
 1. Create `True` action
     1. Set `Action` to `Pretius APEX Context Menu [Plug-In]`
     1. Set `List name` to `POPUP_MENU`
