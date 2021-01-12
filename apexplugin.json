@@ -1,22 +1,25 @@
 {
-  "name" : "Pretius APEX Context Menu",
+  "name" : "Pretius Context Menu",
   "version" : "1.1.0",
-  "description" : "Pretius APEX Context Menu is dynamic action plugin implementing APEX popup menu based on defined APEX list. The plugin can be attached to any HTML element and renders entries according to authorisation scheme result. Menu entries can be extended by overriding behaviour, dynamically adding submenu and by adding new entries.",
-  "keywords" : ["menu", "context", "popup menu", "list"],
-  "homepage" : "https://github.com/bostrowski/Pretius-APEX-Context-Menu",
+  "description" : "Pretius Context Menu is dynamic action plugin implementing APEX popup menu based on defined APEX list. The plugin can be attached to any HTML element and renders entries according to authorisation scheme result. Menu entries can be extended by overriding behaviour, dynamically adding submenu and by adding new entries.",
+  "keywords" : ["menu", "context", "popup menu", "list", "popup"],
+  "homepage" : "https://github.com/Pretius/Pretius-APEX-Context-Menu",
   "bugs" : {
-    "url" : "https://github.com/bostrowski/Pretius-APEX-Context-Menu/issues",
-    "email" : "apex@pretius.com"
+    "url" : "https://github.com/Pretius/Pretius-APEX-Context-Menu/issues",
+    "email" : "apex-plugins@pretius.com"
   },
   "license" : "MIT",
+  "commercial" : "No",
+  "commercially_supported":"Yes",  
   "author" : {
-    "name" : "Bartosz Ostrowski",
-    "email" : "bostrowski@pretius.com",
-    "url" : "http://www.ostrowskibartosz.pl"
+    "name" : "Pretius",
+    "email" : "apex-plugins@pretius.com",
+    "url" : "http://www.pretius.com",
+    "twitter": "PretiusSoftware"
   },
   "repository" : {
     "type" : "git",
-    "url" : "https://github.com/bostrowski/Pretius-APEX-Context-Menu.git"
+    "url" : "https://github.com/Pretius/Pretius-APEX-Context-Menu.git"
   },
   "oracle": {
     "versions": [
@@ -35,7 +38,7 @@
         "internalName" : "COM.PRETIUS.APEX.CONTEXTMENU",
         "type" : "dynamic action",
         "demo" : "https://apex.oracle.com/pls/apex/f?p=PRETIUS_APEX_CONTEXT_MENU",
-        "previewImage" : "https://raw.githubusercontent.com/bostrowski/Pretius-APEX-Context-Menu/master/images/image_preview.gif"
+        "previewImage" : "https://raw.githubusercontent.com/Pretius/Pretius-APEX-Context-Menu/master/images/image_preview.gif"
       }
     }
   }
