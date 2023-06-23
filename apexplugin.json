@@ -37,7 +37,7 @@
       "plugin" : {
         "internalName" : "COM.PRETIUS.APEX.CONTEXTMENU",
         "type" : "dynamic action",
-        "demo" : "https://apex.oracle.com/pls/apex/f?p=PRETIUS_APEX_CONTEXT_MENU",
+        "demo" : "https://apex.oracle.com/pls/apex/f?p=113048:1",
         "previewImage" : "https://raw.githubusercontent.com/Pretius/Pretius-APEX-Context-Menu/master/images/image_preview.gif"
       }
     }
